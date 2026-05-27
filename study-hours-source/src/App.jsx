@@ -9,7 +9,7 @@ let _key = 0;
 const nextKey = () => ++_key;
 
 function makeSubject(name = '') {
-  return { key: nextKey(), name, W: 5, D: 5, C: 5, U: 5 };
+  return { key: nextKey(), name, importance: 5 };
 }
 
 const INITIAL_SUBJECTS = [makeSubject('Mathematics'), makeSubject('History')];

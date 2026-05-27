@@ -1,13 +1,8 @@
 import { toSubscript } from '../lib/format.js';
 
-const RATING_FIELDS = [
-  { letter: 'W', name: 'weight',        role: 'numerator'   },
-  { letter: 'D', name: 'difficulty',    role: 'numerator'   },
-  { letter: 'C', name: 'confidence',    role: 'denominator' },
-  { letter: 'U', name: 'understanding', role: 'denominator' }
-];
-
 export default function SubjectCard({ subject, index, onUpdate, onRemove, canRemove }) {
+  const v = subject.importance;
+
   return (
     <div className="subject-card entering">
       <div className="subject-header">
@@ -29,25 +24,41 @@ export default function SubjectCard({ subject, index, onUpdate, onRemove, canRem
           ×
         </button>
       </div>
-      <div className="ratings-grid">
-        {RATING_FIELDS.map(({ letter, name, role }) => (
-          <div key={letter} className="rating-field" data-role={role}>
-            <div className="rating-label">
-              <span className="rating-letter">{letter}</span>
-              <span className="rating-name">{name}</span>
-            </div>
-            <input
-              className={`rating-input rating-${letter}`}
-              type="number"
-              min="1"
-              max="10"
-              step="1"
-              value={subject[letter]}
-              onChange={(e) => onUpdate({ [letter]: e.target.value })}
-            />
-            <div className="rating-scale">scale of 1—10</div>
-          </div>
-        ))}
+
+      <div className="importance-section">
+        <div className="importance-header">
+          <span className="importance-label">Priority</span>
+          <span className="importance-value">{v}</span>
+          <span className="importance-out-of">/ 10</span>
+        </div>
+
+        <input
+          type="range"
+          className="importance-slider"
+          style={{ '--v': v }}
+          min="1"
+          max="10"
+          step="1"
+          value={v}
+          onChange={(e) => onUpdate({ importance: Number(e.target.value) })}
+        />
+
+        <div className="importance-ticks">
+          {Array.from({ length: 10 }, (_, i) => (
+            <span
+              key={i + 1}
+              className={`importance-tick${v === i + 1 ? ' active' : ''}`}
+            >
+              {i + 1}
+            </span>
+          ))}
+        </div>
+
+        <p className="importance-hints">
+          Consider: <em>how much this subject counts toward your grade</em>,{' '}
+          <em>how difficult you find it</em>, and{' '}
+          <em>how unprepared you feel</em>.
+        </p>
       </div>
     </div>
   );

@@ -17,27 +17,22 @@ export default function AppliedWork({ result }) {
         Plugged into your subjects
       </h2>
 
-      {/* ---- Step 1 — build aᵢ for every subject ---- */}
-      <Step num="i." title="Build a weight for every subject">
+      {/* ---- Step 1 — priority rating becomes the weight ---- */}
+      <Step num="i." title="Your priority rating is the weight">
         <p className="step-prose">
-          For each subject the weight is <em>aᵢ = WᵢDᵢ ⁄ CᵢUᵢ</em>. The
-          numerator <em>(W&middot;D)</em> reflects how much the subject demands
-          of you; the denominator <em>(C&middot;U)</em> reflects how prepared
-          you already are. The ratio is large precisely when a subject matters
-          and you're not yet on top of it.
+          For each subject the weight <em>aᵢ</em> is simply the priority score
+          you gave it on the slider. A higher number means you judged this
+          subject to need more of your time — whether because of its grade
+          weight, its difficulty, or how unprepared you feel.
         </p>
         <div className="equations">
-          {subjects.map((d, i) => {
-            const num = d.W * d.D;
-            const den = d.C * d.U;
-            return (
-              <div key={d.id} className="equation-line" style={{ animationDelay: `${0.15 + i * 0.12}s` }}>
-                <Equation
-                  tex={`\\text{${escapeTex(d.name)}}: \\quad a_{${d.id}} = \\dfrac{${d.W} \\cdot ${d.D}}{${d.C} \\cdot ${d.U}} = \\dfrac{${num}}{${den}} = ${fmt(d.a, 3)}`}
-                />
-              </div>
-            );
-          })}
+          {subjects.map((d, i) => (
+            <div key={d.id} className="equation-line" style={{ animationDelay: `${0.15 + i * 0.12}s` }}>
+              <Equation
+                tex={`\\text{${escapeTex(d.name)}}: \\quad a_{${d.id}} = ${fmt(d.a, 0)}`}
+              />
+            </div>
+          ))}
         </div>
       </Step>
 
@@ -54,7 +49,7 @@ export default function AppliedWork({ result }) {
         <div className="equations">
           <div className="equation-line" style={{ animationDelay: `${0.15 + subjects.length * 0.12 + 0.6}s` }}>
             <Equation
-              tex={`\\sum_{i=1}^{${subjects.length}} a_i = ${subjects.map((d) => fmt(d.a, 3)).join(' + ')} = ${fmt(sumA, 3)}`}
+              tex={`\\sum_{i=1}^{${subjects.length}} a_i = ${subjects.map((d) => fmt(d.a, 0)).join(' + ')} = ${fmt(sumA, 0)}`}
             />
           </div>
         </div>
@@ -81,7 +76,7 @@ export default function AppliedWork({ result }) {
               style={{ animationDelay: `${0.15 + subjects.length * 0.12 + 1.45 + i * 0.1}s` }}
             >
               <Equation
-                tex={`x_{${d.id}} = \\dfrac{${fmt(d.a, 3)}}{${fmt(sumA, 3)}} = ${fmt(d.frac, 4)} \\quad (${fmt(d.frac * 100, 1)}\\%)`}
+                tex={`x_{${d.id}} = \\dfrac{${fmt(d.a, 0)}}{${fmt(sumA, 0)}} = ${fmt(d.frac, 4)} \\quad (${fmt(d.frac * 100, 1)}\\%)`}
               />
             </div>
           ))}

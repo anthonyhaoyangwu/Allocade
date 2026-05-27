@@ -9,18 +9,16 @@ export default function Intro() {
       </p>
       <div className="abstract">
         <p>
-          <strong>The premise.</strong> Rate every subject on four axes from 1
-          to 10. The two on top — <em>W</em> and <em>D</em> — pull time toward
-          a subject; the two on the bottom — <em>C</em> and <em>U</em> — push
-          time away. The weight is <em>a&nbsp;=&nbsp;WD&nbsp;/&nbsp;CU</em>,
-          and your total hours are split in proportion. Work shown line by
-          line.
+          <strong>The premise.</strong> Give each subject a single priority
+          score from 1 to 10. Let it reflect everything you know about
+          that subject — how much it counts toward your grade, how
+          difficult you find it, and how unprepared you feel. Your
+          available hours are then split in exact proportion to those
+          scores. Work shown line by line.
         </p>
         <dl className="legend">
-          <dt>W</dt><dd>assessment weight</dd>
-          <dt>D</dt><dd>difficulty</dd>
-          <dt>C</dt><dd>confidence</dd>
-          <dt>U</dt><dd>understanding</dd>
+          <dt>1</dt><dd>needs very little of your time</dd>
+          <dt>10</dt><dd>deserves the lion's share</dd>
         </dl>
       </div>
     </section>

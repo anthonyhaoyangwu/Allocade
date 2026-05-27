@@ -2,13 +2,12 @@
 //  Lagrangian Optimization — the heart of Study Hours
 // =============================================================================
 //
-//  Given N subjects, each with four 1–10 ratings:
-//      W = assessment weight     (numerator — pulls time toward subject)
-//      D = difficulty            (numerator — pulls time toward subject)
-//      C = confidence            (denominator — pushes time away)
-//      U = understanding         (denominator — pushes time away)
+//  Given N subjects, each with a single 1–10 priority rating:
+//      importance  (the user's holistic judgement of how much attention
+//                   this subject needs — considering grade weight, difficulty,
+//                   and how unprepared they feel)
 //
-//  Each subject's weight is        aᵢ = (Wᵢ · Dᵢ) / (Cᵢ · Uᵢ)
+//  Each subject's weight is simply        aᵢ = importanceᵢ
 //
 //  We maximise total log-benefit subject to the budget constraint:
 //
@@ -39,34 +38,24 @@ export function clampRating(value) {
 }
 
 /**
- * Compute the raw weight for a single subject:  a = (W · D) / (C · U)
- */
-export function computeWeight({ W, D, C, U }) {
-  return (W * D) / (C * U);
-}
-
-/**
  * Run the full Lagrangian allocation.
  *
- * @param {Array<{name:string, W:number, D:number, C:number, U:number}>} subjects
+ * @param {Array<{name:string, importance:number}>} subjects
  * @param {number} totalHours  T, the time budget
  * @returns {{
- *   subjects: Array<{ id, name, W, D, C, U, a, frac, hours }>,
+ *   subjects: Array<{ id, name, importance, a, frac, hours }>,
  *   sumA: number,
  *   totalHours: number
  * }}
  */
 export function allocate(subjects, totalHours) {
   const enriched = subjects.map((s, idx) => {
-    const W = clampRating(s.W);
-    const D = clampRating(s.D);
-    const C = clampRating(s.C);
-    const U = clampRating(s.U);
-    const a = computeWeight({ W, D, C, U });
+    const importance = clampRating(s.importance);
     return {
       id: idx + 1,
       name: s.name?.trim() || `Subject ${idx + 1}`,
-      W, D, C, U, a
+      importance,
+      a: importance,
     };
   });
 
